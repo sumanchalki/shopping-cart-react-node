@@ -5,10 +5,12 @@ export default () => {
     <div className="header">
       <div className="container text-center">
         <div className="logo">
-          <a href="/"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K" alt="React Store" /></a>
+          <a href="/"><img src="img/logo.png" alt="React Store" /></a>
         </div>
-        <h1>React Store</h1>      
-        <p>Enjoy the fast shopping cart experience with React & Redux.</p>
+        <div className="header-text">
+          <h1><span>Super</span> <span>Shopping</span></h1>
+          <p>Enjoy the fast shopping cart experience with React, Redux & Node.js.</p>
+        </div>
       </div>
     </div>
   );

@@ -1,3 +1,40 @@
+body {
+  color: #01213d;
+}
+
+a {
+  color: #7400a6;
+}
+
+a:hover {
+  color: #065495;
+}
+
+.header .container {
+  height: 120px;
+  display: flex;
+}
+
+.header .logo {
+  width: auto;
+}
+
+.header .logo img {
+  width: 140px;
+}
+
+.header .header-text {
+  margin: auto;
+}
+
+.header .header-text h1 span:first-child{
+color: #7400a6;
+}
+
+.header .header-text h1 span:last-child {
+  color: #0b4576;
+}
+
 /* Remove the navbar's default rounded borders and increase the bottom margin */ 
 .navbar {
   /*margin-bottom: 20px;*/
