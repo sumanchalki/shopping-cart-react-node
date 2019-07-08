@@ -51,6 +51,14 @@ export function getProductDetails(productId) {
   }
 }
 
+export const signup = (formProps, callback) => async dispatch => {
+  try {
+    
+  } catch (e) {
+    
+  }
+};
+
 // Handle HTTP errors since fetch won't.
 function handleErrors(response) {
   if (!response.ok) {

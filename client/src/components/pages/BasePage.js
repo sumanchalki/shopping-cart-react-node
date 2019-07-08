@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Home from './Home';
 import ShoppingCart from './ShoppingCart';
 import ProductDetailsPage from './ProductDetailsPage';
+import SignUpPage from './SignUpPage';
+import SignInPage from './SignInPage';
 import PageNotFound from '../views/PageNotFound';
 import Header from '../views/Header';
 import NavContainer from '../containers/NavContainer';
@@ -19,6 +21,12 @@ export default class BasePage extends Component {
         break;
       case "ShoppingCart":
         componentRendered = <ShoppingCart {...this.props}/>;
+        break;
+      case "SignUpPage":
+        componentRendered = <SignUpPage {...this.props}/>;
+        break;
+      case "SignInPage":
+        componentRendered = <SignInPage {...this.props}/>;
         break;
       default:
         componentRendered = <PageNotFound {...this.props}/>;
