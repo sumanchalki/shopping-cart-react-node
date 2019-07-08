@@ -1,5 +1,4 @@
 import * as types from './action-types';
-import { fetchProducts, fetchProductDetails } from '../lib/fetchProducts';
 
 export function addToCartAction(product) {
   return {
@@ -23,15 +22,39 @@ export function updateCartAction(payload) {
 }
 
 export function getProducts(payload) {
-  return {
-    type: types.FETCH_PRODUCTS,
-    payload: fetchProducts()
-  };
+  return function action(dispatch) {
+    return fetch("/data/ProductData.json")
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(json => {
+        dispatch({ type: types.FETCH_PRODUCTS, payload: json.Products });
+      });
+  }
 }
 
 export function getProductDetails(productId) {
-  return {
-    type: types.FETCH_PRODUCT_DETAILS,
-    payload: fetchProductDetails(productId)
-  };
+  return function action(dispatch) {
+    return fetch("/data/ProductData.json")
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(json => {
+        const product = json.Products.filter(product => {
+          if (product.Id === productId) {
+            return true;
+          }
+          else {
+            return false;
+          }
+        });
+        dispatch({ type: types.FETCH_PRODUCT_DETAILS, payload: product });
+      });
+  }
+}
+
+// Handle HTTP errors since fetch won't.
+function handleErrors(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
 }

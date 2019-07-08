@@ -20,6 +20,12 @@ export default (props) => {
             <NavLink exact={true} to="/" activeClassName='active' className="nav-link">Home</NavLink>
           </li>
           <li className="nav-item">
+            <NavLink to="/sign-up" activeClassName='active' className="nav-link">Sign Up</NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to="/sign-in" activeClassName='active' className="nav-link">Sign In</NavLink>
+          </li>
+          <li className="nav-item">
             <NavLink to="/shopping-cart" activeClassName='active' className="nav-link">My cart</NavLink>
           </li>
         </ul>

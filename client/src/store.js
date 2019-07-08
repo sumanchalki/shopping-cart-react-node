@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import throttle from 'lodash.throttle';
 import rootReducer from './reducers';
 import { loadState, saveState } from './localStorage';
-import Async from './middlewares/async';
+import thunk from "redux-thunk";
 import stateValidator from './middlewares/stateValidator';
 
 let store;
@@ -12,7 +12,7 @@ export default (initialState, env = 'real') => {
     case 'real':
     default:
       const persistedState = loadState();
-      store = createStore(rootReducer, persistedState, applyMiddleware(Async, stateValidator));
+      store = createStore(rootReducer, persistedState, applyMiddleware(thunk, stateValidator));
 
       store.subscribe(
         // Throttle: invokes a function at most once per every 1000 milliseconds.
@@ -24,7 +24,7 @@ export default (initialState, env = 'real') => {
       );
       break;
     case 'test':
-      store = createStore(rootReducer, initialState, applyMiddleware(Async, stateValidator));
+      store = createStore(rootReducer, initialState, applyMiddleware(thunk, stateValidator));
       break;
   }
   return store;

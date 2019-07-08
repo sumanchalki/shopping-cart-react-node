@@ -11,6 +11,6 @@ Client is created using React, Redux & Bootstrap. Client code can be found under
 ```
 Open Terminal and cd to current directory
 $ npm install
-$ npm install client
+$ npm run client-install
 $ npm run dev
 ```
