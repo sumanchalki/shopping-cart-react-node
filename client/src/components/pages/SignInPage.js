@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import SignUp from '../containers/SignUp';
+import SignIn from '../containers/SignIn';
 
 export default class SignInPage extends Component {
   render() {
     return(
       <div className="container main-container">
-        <SignUp />
+        <SignIn />
       </div>
     )
   }

@@ -50,6 +50,10 @@ color: #7400a6;
   min-height:400px;
 }
 
+.main-container form {
+  margin: 20px 0;
+}
+
 /* Footer Part */
 .footer-classic {
   background: #2d3246;
