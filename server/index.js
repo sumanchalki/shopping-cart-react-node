@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const connectDb = require('./connectDB');
+const router = require('./routes');
 
 const start = () => {
   const app = express();
@@ -11,10 +12,17 @@ const start = () => {
   connectDb();
   app.use(morgan('combined'));
   app.use(bodyParser.json({ type: '*/*' }));
+  // Handle error of bodyParser if request data is improper.
+  app.use(function(err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send('Invalid JSON input');
+  });
 
-  let publicDir;
+  // Add all routes.
+  router(app);
 
   // Serve the front-end as static files.
+  let publicDir;
   if (process.env.NODE_ENV === 'production') {
     publicDir = 'build';
   }
@@ -35,4 +43,4 @@ const start = () => {
   });
 }
 
-module.exports.start = start;
+exports.start = start;
