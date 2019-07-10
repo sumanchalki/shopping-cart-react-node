@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "client-install": "npm install --prefix client",
+    "populate-db": "cross-env NODE_ENV=dev node server/populateDb",
     "start": "cross-env NODE_ENV=production node server.js",
     "dev": "cross-env NODE_ENV=dev concurrently \"nodemon server.js\" \"npm start --prefix client\""
   },
