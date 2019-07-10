@@ -3,8 +3,12 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+const connectDb = require('./connectDB');
+
 const start = () => {
   const app = express();
+  // Connect to MongoDB.
+  connectDb();
   app.use(morgan('combined'));
   app.use(bodyParser.json({ type: '*/*' }));
 
