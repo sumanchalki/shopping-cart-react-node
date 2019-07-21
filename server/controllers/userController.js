@@ -1,4 +1,13 @@
+const jwt = require('jwt-simple');
 const User = require('../models/User');
+
+let config;
+if (process.env.NODE_ENV === 'production') {
+  config = require('../config/config.prod');
+}
+else if (process.env.NODE_ENV === 'dev') {
+  config = require('../config/config.dev');
+}
 
 exports.signUp = async function(req, res, next) {
   const firstName = req.body.firstname;
@@ -78,11 +87,14 @@ exports.signIn = async function(req, res, next) {
   // If basic validation passed, check authentication.
   if (!Object.keys(errors).length) {
     // Check if a user exists with the given email & password.
-    await User.findOne({ email: email, password: password }, function(err, existingUser) {
+    await User.findOne({ email: email, password: password }, function(err, userFound) {
       if (err) { return next(err); }
 
-      if (!existingUser) {
+      if (!userFound) {
         errors.form = 'Wrong email or password!';
+      }
+      else {
+        return res.json({ 'success': true, token: getUserToken(userFound) });
       }
     });
   }
@@ -90,9 +102,11 @@ exports.signIn = async function(req, res, next) {
   if (Object.keys(errors).length) {
     return res.status(422).send({ 'success': false, errors });
   }
-  else {
-    return res.json({ 'success': true });
-  }
+}
+
+function getUserToken(user) {
+  const timestamp = new Date().getTime();
+  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
 }
 
 function validateEmail(email) {
