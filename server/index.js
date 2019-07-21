@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const connectDb = require('./connectDB');
 const router = require('./routes');
@@ -11,6 +12,7 @@ const start = () => {
   // Connect to MongoDB.
   connectDb();
   app.use(morgan('combined'));
+  app.use(cors());
   app.use(bodyParser.json({ type: '*/*' }));
   // Handle error of bodyParser if request data is improper.
   app.use(function(err, req, res, next) {

@@ -51,11 +51,17 @@ export function getProductDetails(productId) {
   }
 }
 
-export const signup = (formProps, callback) => async dispatch => {
+export const signUp = (formProps, callback) => async dispatch => {
   try {
-    
-  } catch (e) {
-    
+    let response = await fetch('http://localhost:5000/signup', {
+      method: 'POST',
+      body: JSON.stringify(formProps)
+    });
+    let data = await response.json();
+    return data;
+  }
+  catch (e) {
+    console.log(e);
   }
 };
 
