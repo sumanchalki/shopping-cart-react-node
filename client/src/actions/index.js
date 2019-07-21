@@ -53,7 +53,21 @@ export function getProductDetails(productId) {
 
 export const signUp = (formProps, callback) => async dispatch => {
   try {
-    let response = await fetch('http://localhost:5000/signup', {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/signup', {
+      method: 'POST',
+      body: JSON.stringify(formProps)
+    });
+    let data = await response.json();
+    return data;
+  }
+  catch (e) {
+    console.log(e);
+  }
+};
+
+export const signIn = (formProps, callback) => async dispatch => {
+  try {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/signin', {
       method: 'POST',
       body: JSON.stringify(formProps)
     });
