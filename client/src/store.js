@@ -13,7 +13,6 @@ export default (initialState, env = 'real') => {
     default:
       const persistedState = loadState();
       store = createStore(rootReducer, persistedState, applyMiddleware(thunk));
-      console.log(store.getState());
 
       store.subscribe(
         // Throttle: invokes a function at most once per every 1000 milliseconds.

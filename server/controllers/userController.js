@@ -37,7 +37,6 @@ exports.signUp = async function(req, res, next) {
       if (existingUser) {
         errors.email = 'Email exists!';
       }
-
     });
   }
 
@@ -59,6 +58,40 @@ exports.signUp = async function(req, res, next) {
 
       return res.json({ 'success': true, id: result._id });
     });
+  }
+}
+
+exports.signIn = async function(req, res, next) {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  const errors = {};
+
+  if (typeof(password) === 'undefined' || password === '') {
+    errors.password = 'Password cannot be blank';
+  }
+
+  if (typeof(email) === 'undefined' || email === '') {
+    errors.email = 'Email cannot be blank';
+  }
+
+  // If basic validation passed, check authentication.
+  if (!Object.keys(errors).length) {
+    // Check if a user exists with the given email & password.
+    await User.findOne({ email: email, password: password }, function(err, existingUser) {
+      if (err) { return next(err); }
+
+      if (!existingUser) {
+        errors.form = 'Wrong email or password!';
+      }
+    });
+  }
+
+  if (Object.keys(errors).length) {
+    return res.status(422).send({ 'success': false, errors });
+  }
+  else {
+    return res.json({ 'success': true });
   }
 }
 

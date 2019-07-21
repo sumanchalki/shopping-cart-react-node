@@ -7,30 +7,30 @@ import { displayMessage } from '../../lib/cartLib';
 
 const renderInputField = ({ input, label, className, type, meta: { touched, error } }) => (
   <React.Fragment>
-    <label htmlFor={ input.name }>{ label }</label>
-    <input { ...input } className={ className } type={ type } />
-      { touched && error && <span className="text-danger">{ error }</span>}
+    <label htmlFor={input.name}>{label}</label>
+    <input {...input} className={className} type={type} />
+      {touched && error && <span className="text-danger">{error}</span>}
   </React.Fragment>
 )
 
 const renderRadioGroup = ({ input, label, options, className, meta: { touched, pristine, error } }) => (
   <React.Fragment>
-    <label htmlFor={ input.name }>{ label }</label>
+    <label htmlFor={input.name}>{label}</label>
     <div className="form-control">
-    <Field
-      component={ ({ input, options }) => (
-        options.map(o =>
-        <div key={ o.value } className="form-check-inline">
-          <label>
-            <input className={ className } type="radio" { ...input } value={ o.value } checked={ o.value === input.value } /> { o.title }
-          </label>
-        </div>)
-        ) }
-      name={ input.name }
-      options={ options }
-  />
+      <Field
+        component={({ input, options }) => (
+          options.map(o =>
+          <div key={o.value} className="form-check-inline">
+            <label>
+              <input className={className} type="radio" {...input} value={o.value} checked={o.value === input.value} /> {o.title}
+            </label>
+          </div>)
+          )}
+        name={input.name}
+        options={options}
+      />
     </div>
-      { touched && !pristine && error && <span className="text-danger">{ error }</span> }
+    {touched && !pristine && error && <span className="text-danger">{error}</span>}
   </React.Fragment>
 )
 
@@ -42,8 +42,15 @@ class SignUp extends Component {
         this.props.reset();
       }
       else if (!response.success && Object.keys(response.errors).length) {
-        throw new SubmissionError(response.errors);
-
+        const errorsList = {...response.errors};
+        if (typeof(errorsList.form) === 'undefined') {
+          throw new SubmissionError(errorsList);
+        }
+        else {
+          const formError = errorsList.form;
+          delete errorsList.form;
+          throw new SubmissionError({ _error: formError, ...errorsList });
+        }
       }
       else {
         throw new SubmissionError({ _error: 'Signup failed due to some server error!' });
@@ -51,9 +58,13 @@ class SignUp extends Component {
     });
   }
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, error } = this.props;
     return(
-      <form onSubmit={ handleSubmit(this.onSubmitHandler) } className="needs-validation">
+      <form onSubmit={handleSubmit(this.onSubmitHandler)} className="needs-validation">
+        {error &&
+          <div className="alert alert-danger">
+            <strong>Error!</strong> {error}
+          </div>}
         <div className="form-group">
           <Field name="firstname" label="First Name" type="text" className="form-control" component={renderInputField} />
         </div>
@@ -62,7 +73,7 @@ class SignUp extends Component {
         </div>
         <div className="form-group">
           <Field name="gender" label="Gender" className="form-check-input"
-            component={ renderRadioGroup } options={ [
+            component={renderRadioGroup} options={ [
               { title: 'Male', value: 'male' },
               { title: 'Female', value: 'female' }
           ] } />
@@ -81,12 +92,12 @@ class SignUp extends Component {
           </div> */}
         </div>
         <div className="form-group">
-          <Field name="email" label="Email" type="email" className="form-control" component={ renderInputField } />
+          <Field name="email" label="Email" type="email" className="form-control" component={renderInputField} />
         </div>
         <div className="form-group">
-          <Field name="password" label="Password" type="password" className="form-control" component={ renderInputField } />
+          <Field name="password" label="Password" type="password" className="form-control" component={renderInputField} />
         </div>
-        <button type="submit" className="btn btn-primary" disabled={ submitting }>Sign Up</button>
+        <button type="submit" className="btn btn-primary" disabled={submitting}>Sign Up</button>
       </form>
     );
   }
