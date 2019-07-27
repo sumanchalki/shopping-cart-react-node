@@ -51,9 +51,9 @@ export function getProductDetails(productId) {
   }
 }
 
-export const signUp = (formProps, callback) => async dispatch => {
+export const signUp = (formProps) => async dispatch => {
   try {
-    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/signup', {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/signup', {
       method: 'POST',
       body: JSON.stringify(formProps)
     });
@@ -65,13 +65,17 @@ export const signUp = (formProps, callback) => async dispatch => {
   }
 };
 
-export const signIn = (formProps, callback) => async dispatch => {
+export const signIn = (formProps) => async dispatch => {
   try {
-    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/signin', {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/signin', {
       method: 'POST',
       body: JSON.stringify(formProps)
     });
+
     let data = await response.json();
+    if (typeof(data.userData) !== 'undefined') {
+      dispatch({ type: types.LOGIN_USER, payload: data.userData });
+    }
     return data;
   }
   catch (e) {

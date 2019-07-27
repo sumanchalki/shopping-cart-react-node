@@ -1,13 +1,4 @@
-const jwt = require('jwt-simple');
 const User = require('../models/User');
-
-let config;
-if (process.env.NODE_ENV === 'production') {
-  config = require('../config/config.prod');
-}
-else if (process.env.NODE_ENV === 'dev') {
-  config = require('../config/config.dev');
-}
 
 exports.signUp = async function(req, res, next) {
   const firstName = req.body.firstname;
@@ -70,7 +61,10 @@ exports.signUp = async function(req, res, next) {
   }
 }
 
-exports.signIn = async function(req, res, next) {
+// This is for basic field validation. Authentication is done in passport local strategy.
+// As passport expects username and password to be mandatory fields,
+// blank validation is added here and called before passport validation.
+exports.signInValidation = async function(req, res, next) {
   const email = req.body.email;
   const password = req.body.password;
 
@@ -84,31 +78,13 @@ exports.signIn = async function(req, res, next) {
     errors.email = 'Email cannot be blank';
   }
 
-  // If basic validation passed, check authentication.
-  if (!Object.keys(errors).length) {
-    // Check if a user exists with the given email & password.
-    await User.findOne({ email: email, password: password }, function(err, userFound) {
-      if (err) { return next(err); }
-
-      if (!userFound) {
-        errors.form = 'Wrong email or password!';
-      }
-      else {
-        return res.json({ 'success': true, token: getUserToken(userFound) });
-      }
-    });
-  }
-
   if (Object.keys(errors).length) {
     return res.status(422).send({ 'success': false, errors });
   }
+  next();
 }
 
-function getUserToken(user) {
-  const timestamp = new Date().getTime();
-  return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
-}
-
+// TODO: To use express validator instead.
 function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
+import { AuthContext } from '../../contexts/AuthContext';
 
-export default (props) => {
-  return(
+export default class NavBar extends Component {
+  render() {
+    const isLoggedIn = this.context.isAuthenticated();
+    return (
     <React.Fragment>
       <a className="navbar-brand" target="_blank" rel="noopener noreferrer" href="https://github.com/sumanchalki/shopping-cart-react-redux" title="Github Code">
         <svg height="32" className="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="32" aria-hidden="true">
@@ -19,17 +22,28 @@ export default (props) => {
           <li className="nav-item">
             <NavLink exact={true} to="/" activeClassName='active' className="nav-link">Home</NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to="/sign-up" activeClassName='active' className="nav-link">Sign Up</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/sign-in" activeClassName='active' className="nav-link">Sign In</NavLink>
-          </li>
+          { !isLoggedIn &&
+            <React.Fragment>
+              <li className="nav-item">
+                <NavLink to="/sign-up" activeClassName='active' className="nav-link">Sign Up</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/sign-in" activeClassName='active' className="nav-link">Sign In</NavLink>
+              </li>
+            </React.Fragment>
+          }
           <li className="nav-item">
             <NavLink to="/shopping-cart" activeClassName='active' className="nav-link">My cart</NavLink>
           </li>
+          { isLoggedIn &&
+            <li className="nav-item">
+              <NavLink to="/signout" activeClassName='active' className="nav-link">Sign Out</NavLink>
+            </li>
+          }
         </ul>
       </div> 
     </React.Fragment>
-  );
+  )};
 }
+
+NavBar.contextType = AuthContext;

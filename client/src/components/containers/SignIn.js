@@ -16,10 +16,10 @@ class SignIn extends Component {
   onSubmitHandler = formProps => {
     return this.props.signIn(formProps).then(response => {
       if (response.success) {
-        console.log(response);
         this.props.reset();
+        this.props.history.push('/');
       }
-      else if (!response.success && Object.keys(response.errors).length) {
+      else if (!response.success && typeof(response.errors) !== 'undefined' && Object.keys(response.errors).length) {
         const errorsList = {...response.errors};
         if (typeof(errorsList.form) === 'undefined') {
           throw new SubmissionError(errorsList);

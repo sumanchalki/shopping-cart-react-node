@@ -13,17 +13,21 @@ else if (process.env.NODE_ENV === 'dev') {
 }
 
 // Create a local strategy.
-const localStrategyOptions = { usernameField: 'email' };
+const localStrategyOptions = {
+  usernameField: 'email',
+  passwordField: 'password'
+};
 const localLogin = new LocalStrategy(localStrategyOptions, function(email, password, done) {
   User.findOne({ email: email }, function(err, userFound) {
     if (err) { return done(err); }
-    if (!userFound) { return done(null, false); }
+    // TODO: Use a common function to throw form errors.
+    if (!userFound) { return done(null, false, { success: false, errors: { 'form': 'Wrong email or password' } }); }
 
     userFound.comparePassword(password, function(err, isMatch) {
       if (err) { return done(err); }
 
       // Call done with no error and user as false (not found).
-      if (!isMatch) { return done(null, false); }
+      if (!isMatch) { return done(null, false, { success: false, errors: { 'form': 'Wrong email or password' } }); }
 
       // Call done with the user found.
       return done(null, userFound);

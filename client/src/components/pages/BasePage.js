@@ -8,8 +8,9 @@ import PageNotFound from '../views/PageNotFound';
 import Header from '../views/Header';
 import NavContainer from '../containers/NavContainer';
 import Footer from '../views/Footer';
+import withAuth from '../../hoc/withAuth';
 
-export default class BasePage extends Component {
+class BasePage extends Component {
   render() {
     let componentRendered = '';
     switch (this.props.pageName) {
@@ -41,3 +42,5 @@ export default class BasePage extends Component {
     );
   }
 }
+
+export default withAuth(BasePage);

@@ -5,7 +5,7 @@ export default class SignInPage extends Component {
   render() {
     return(
       <div className="container main-container">
-        <SignIn />
+        <SignIn {...this.props}/>
       </div>
     )
   }

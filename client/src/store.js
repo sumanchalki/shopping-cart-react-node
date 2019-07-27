@@ -18,7 +18,8 @@ export default (initialState, env = 'real') => {
         // Throttle: invokes a function at most once per every 1000 milliseconds.
         throttle(() => {
           saveState({
-            cart: store.getState().cart
+            cart: store.getState().cart,
+            user: store.getState().user
           });
         }, 1000)
       );
