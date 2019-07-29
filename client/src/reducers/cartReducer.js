@@ -48,6 +48,10 @@ const cartReducer = (state = [], action) => {
 
       return state;
 
+    // For logout, cart will also be empty.
+    case types.LOGOUT_USER:
+      return [];
+
     default:
       return state;
   }

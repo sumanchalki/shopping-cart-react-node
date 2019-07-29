@@ -51,7 +51,7 @@ export function getProductDetails(productId) {
   }
 }
 
-export const signUp = (formProps) => async dispatch => {
+export const signUp = formProps => async dispatch => {
   try {
     let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/signup', {
       method: 'POST',
@@ -65,7 +65,7 @@ export const signUp = (formProps) => async dispatch => {
   }
 };
 
-export const signIn = (formProps) => async dispatch => {
+export const signIn = formProps => async dispatch => {
   try {
     let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/signin', {
       method: 'POST',
@@ -81,6 +81,10 @@ export const signIn = (formProps) => async dispatch => {
   catch (e) {
     console.log(e);
   }
+};
+
+export const signOut = () => dispatch => {
+  dispatch({ type: types.LOGOUT_USER });
 };
 
 // Handle HTTP errors since fetch won't.

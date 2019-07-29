@@ -11,7 +11,7 @@ export default WrappedComponent => {
   class AuthComponent extends Component {
     isAuthenticated = () => {
       const { userData } = this.props.user;
-      if (typeof(userData) !== 'undefined' && Object.keys(userData).length) {
+      if (typeof(userData) !== 'undefined' && userData && Object.keys(userData).length) {
         return true;
       }
       return false;

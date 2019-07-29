@@ -8,6 +8,7 @@ import './index.css';
 
 import RootStoreProvider from './RootStoreProvider';
 import BasePage from './components/pages/BasePage';
+import SignOutPage from './components/pages/SignOutPage';
 
 /*
  * BasePage is used to include Header, Footer etc.
@@ -28,6 +29,8 @@ ReactDOM.render(
         render={routeProps => (<BasePage {...routeProps} pageName="SignUpPage" />)} />
       <Route path="/sign-in"
         render={routeProps => (<BasePage {...routeProps} pageName="SignInPage" />)} />
+      {/* signout page doesn't require any Header, Footer etc. */}
+      <Route path="/signout" component={SignOutPage} />
       {/* <Route path="/sitemap.xml" component={Sitemap}/> */}
       <Route path="*"
         render={routeProps => (<BasePage {...routeProps} pageName="PageNotFound" />)} />
