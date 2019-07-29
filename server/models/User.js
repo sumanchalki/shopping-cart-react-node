@@ -1,5 +1,7 @@
 const jwt = require('jwt-simple');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
+
 const { Schema } = mongoose;
 
 let config;
@@ -26,9 +28,31 @@ userSchema
     return this.firstName + ' ' + this.lastName;
 });
 
+// Before save, encrypt the password.
+userSchema.pre('save', function(next) {
+  const user = this;
+
+  // Generate a salt and then run callback.
+  bcrypt.genSalt(10, function(err, salt) {
+    if (err) { return next(err); }
+
+    // Hash the password using the salt.
+    bcrypt.hash(user.password, salt, null, function(err, hash) {
+      if (err) { return next(err); }
+
+      // Replace plain text password with encrypted password.
+      user.password = hash;
+      next();
+    });
+  });
+});
+
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
-  isMatch = candidatePassword === this.password;
-  callback(null, isMatch);
+  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+    if (err) { return callback(err); }
+
+    callback(null, isMatch);
+  });
 }
 
 userSchema.methods.getUserToken = () => {
