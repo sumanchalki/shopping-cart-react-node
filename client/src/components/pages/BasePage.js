@@ -4,6 +4,7 @@ import ShoppingCart from './ShoppingCart';
 import ProductDetailsPage from './ProductDetailsPage';
 import SignUpPage from './SignUpPage';
 import SignInPage from './SignInPage';
+import EditProfilePage from './EditProfilePage';
 import PageNotFound from '../views/PageNotFound';
 import Header from '../views/Header';
 import NavContainer from '../containers/NavContainer';
@@ -28,6 +29,9 @@ class BasePage extends Component {
         break;
       case "SignInPage":
         componentRendered = <SignInPage {...this.props}/>;
+        break;
+      case "EditProfilePage":
+        componentRendered = <EditProfilePage {...this.props}/>;
         break;
       default:
         componentRendered = <PageNotFound {...this.props}/>;

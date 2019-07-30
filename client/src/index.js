@@ -29,6 +29,8 @@ ReactDOM.render(
         render={routeProps => (<BasePage {...routeProps} pageName="SignUpPage" />)} />
       <Route path="/sign-in"
         render={routeProps => (<BasePage {...routeProps} pageName="SignInPage" />)} />
+      <Route path="/edit-profile"
+        render={routeProps => (<BasePage {...routeProps} pageName="EditProfilePage" />)} />
       {/* signout page doesn't require any Header, Footer etc. */}
       <Route path="/signout" component={SignOutPage} />
       {/* <Route path="/sitemap.xml" component={Sitemap}/> */}

@@ -94,3 +94,17 @@ function handleErrors(response) {
   }
   return response;
 }
+
+export const loadUser = (userDetails) => async dispatch => {
+  try {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/load-user', {
+      method: 'POST',
+      body: JSON.stringify(userDetails)
+    });
+    let data = await response.json();
+    return data;
+  }
+  catch (e) {
+    console.log(e);
+  }
+};

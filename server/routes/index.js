@@ -23,4 +23,5 @@ module.exports = function(app) {
       return res.json({ success: true, userData: { ...userObj, token: user.getUserToken() } });
     })(req, res, next);
   });
+  app.post('/api/load-user', userController.getUserDetails);
 }
