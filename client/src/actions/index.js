@@ -87,6 +87,23 @@ export const signOut = () => dispatch => {
   dispatch({ type: types.LOGOUT_USER });
 };
 
+export const loadUser = (userDetails) => async dispatch => {
+  try {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/load-user', {
+      method: 'POST',
+      body: JSON.stringify(userDetails)
+    });
+    let data = await response.json();
+    if (data.success) {
+      dispatch({ type: types.LOAD_USER, payload: data });
+    }
+    return data;
+  }
+  catch (e) {
+    console.log(e);
+  }
+};
+
 // Handle HTTP errors since fetch won't.
 function handleErrors(response) {
   if (!response.ok) {

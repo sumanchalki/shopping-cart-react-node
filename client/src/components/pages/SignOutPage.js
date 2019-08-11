@@ -4,8 +4,12 @@ import { Redirect } from 'react-router-dom';
 import * as actions from '../../actions';
 
 class SignOutPage extends Component {
-  render() {
+  componentDidMount() {
+    // As we shouldn't update state during an existing
+    // state transition (such as within `render`).
     this.props.signOut();
+  }
+  render() {
     return <Redirect to='/' />;
   }
 }

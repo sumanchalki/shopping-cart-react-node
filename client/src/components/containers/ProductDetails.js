@@ -8,7 +8,7 @@ import { AddToCartContext } from '../../contexts/AddToCartContext';
 class ProductDetails extends Component {
   constructor(props) {
     super(props);
-    this.state = {productDetails: {}};
+    this.state = { productDetails: {} };
   }
 
   componentWillMount() {
@@ -50,7 +50,7 @@ class ProductDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  return {productDetails: state.products.productDetails};
+  return { productDetails: state.products.productDetails };
 }
 
 export default connect(mapStateToProps, actions)(ProductDetails);

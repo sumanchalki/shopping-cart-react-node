@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import { compose } from 'redux';
+import _ from 'lodash';
 import * as actions from '../../actions';
 import { displayMessage } from '../../lib/cartLib';
 
@@ -36,11 +37,11 @@ const renderRadioGroup = ({ input, label, options, className, meta: { touched, p
   </React.Fragment>
 )
 
-class SignUp extends Component {
+class EditProfile extends Component {
   onSubmitHandler = formProps => {
-    return this.props.signUp(formProps).then(response => {
+    return this.props.editProfile(formProps).then(response => {
       if (response.success) {
-        displayMessage('You have been signed up successfully.', 'success');
+        displayMessage('You have updated your profile successfully.', 'success');
         this.props.reset();
       }
       else if (!response.success && Object.keys(response.errors).length) {
@@ -55,12 +56,13 @@ class SignUp extends Component {
         }
       }
       else {
-        throw new SubmissionError({ _error: 'Signup failed due to some server error!' });
+        throw new SubmissionError({ _error: 'Edit profile failed due to some server error!' });
       }
     });
   }
+
   render() {
-    const { handleSubmit, submitting, error } = this.props;
+    const { handleSubmit, pristine, reset, submitting, error } = this.props;
     return(
       <form onSubmit={handleSubmit(this.onSubmitHandler)} className="needs-validation">
         {error &&
@@ -79,39 +81,16 @@ class SignUp extends Component {
               { title: 'Male', value: 'male' },
               { title: 'Female', value: 'female' }
           ] } />
-          {/* <label htmlFor="gender">Gender</label>
-          <div className="form-control">
-            <div className="form-check-inline">
-              <label className="form-check-label">
-                <Field name="gender" type="radio" className="form-check-input" component="input" value="male" /> Male
-              </label>
-            </div>
-            <div className="form-check-inline">
-              <label className="form-check-label">
-              <Field name="gender" type="radio" className="form-check-input" component="input" value="female" /> Female
-              </label>
-            </div>
-          </div> */}
         </div>
-        <div className="form-group">
-          <Field name="address" label="Address" type="textarea" className="form-control" component={renderInputField} />
-        </div>
-        <div className="form-group">
-          <Field name="email" label="Email" type="email" className="form-control" component={renderInputField} />
-        </div>
-        <div className="form-group">
-          <Field name="password" label="Password" type="password" className="form-control" component={renderInputField} />
-        </div>
-        <button type="submit" className="btn btn-primary" disabled={submitting}>Sign Up</button>
+        <button type="submit" className="btn btn-primary mr-3" disabled={pristine || submitting}>Update</button>
+        <button type="button" className="btn btn-primary" disabled={pristine || submitting} onClick={reset}>Reset</button>
       </form>
     );
   }
 }
 
 // Also add client-side validation.
-// TODO: Add a Field prop "required" for validation.
-// Also use the same attribute to display (*).
-const validateSignUpForm = values => {
+const validateEditProfileForm = values => {
   const errors = {};
   if (!values.firstname) {
     errors.firstname = 'First Name is required.'
@@ -133,7 +112,21 @@ const validateSignUpForm = values => {
   return errors;
 }
 
+const mapStateToProps = state => {
+  if (!_.isEmpty(state.user.userData)) {
+    const userData = _.omit(state.user.userData, ['firstName', 'lastName']);
+    return {
+      initialValues:
+        {
+          ...userData,
+          firstname: state.user.userData.firstName,
+          lastname: state.user.userData.lastName
+        }
+    };
+  }
+}
+
 export default compose(
-  connect(null, actions),
-  reduxForm({ form: 'signup', validate: validateSignUpForm })
-)(SignUp);
+  connect(mapStateToProps, actions),
+  reduxForm({ form: 'editprofile', validate: validateEditProfileForm })
+)(EditProfile);

@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const User = require('../models/User');
 
 exports.signUp = async function(req, res, next) {
@@ -59,6 +60,22 @@ exports.signUp = async function(req, res, next) {
       return res.json({ 'success': true, id: result._id });
     });
   }
+}
+
+exports.getUserDetails = async (req, res, next) => {
+  const _id = req.body._id;
+  const token = req.body.token;
+  await User.findOne({ _id }, function(err, existingUser) {
+    if (err) { return next(err); }
+
+    if (existingUser) {
+      return res.json({ 'success': true, ..._.omit(existingUser.toObject(), ['password', 'date', '__v']) });
+    }
+    else {
+      return res.json({ 'success': false });
+    }
+  });
+  return res.json({ 'success': false });
 }
 
 // This is for basic field validation. Authentication is done in passport local strategy.

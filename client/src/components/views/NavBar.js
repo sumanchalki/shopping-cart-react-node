@@ -22,23 +22,24 @@ export default class NavBar extends Component {
           <li className="nav-item">
             <NavLink exact={true} to="/" activeClassName='active' className="nav-link">Home</NavLink>
           </li>
-          { !isLoggedIn &&
+          { !isLoggedIn ?
             <React.Fragment>
-              <li className="nav-item">
-                <NavLink to="/sign-up" activeClassName='active' className="nav-link">Sign Up</NavLink>
-              </li>
               <li className="nav-item">
                 <NavLink to="/sign-in" activeClassName='active' className="nav-link">Sign In</NavLink>
               </li>
+              <li className="nav-item">
+                <NavLink to="/sign-up" activeClassName='active' className="nav-link">Sign Up</NavLink>
+              </li>
             </React.Fragment>
-          }
-          <li className="nav-item">
-            <NavLink to="/shopping-cart" activeClassName='active' className="nav-link">My cart</NavLink>
-          </li>
-          { isLoggedIn &&
-            <li className="nav-item">
-              <NavLink to="/signout" activeClassName='active' className="nav-link">Sign Out</NavLink>
-            </li>
+          :
+            <React.Fragment>
+              <li className="nav-item">
+                <NavLink to="/edit-profile" activeClassName='active' className="nav-link">My Profile</NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to="/signout" activeClassName='active' className="nav-link">Sign Out</NavLink>
+              </li>
+            </React.Fragment>
           }
         </ul>
       </div> 
