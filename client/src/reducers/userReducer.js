@@ -3,12 +3,14 @@ import * as types from '../actions/action-types';
 const userReducer = (state = {}, action) => {
   switch (action.type) {
     case types.LOGIN_USER:
-      const userData = action.payload;
+      let userData = action.payload;
       return { ...state, userData };
     case types.LOGOUT_USER:
       return {};
-    case types.LOAD_USER:
-      return { ...state };
+    case types.RELOAD_USER:
+      userData = action.payload;
+      const token = state.userData.token;
+      return { ...state, userData: { ...userData, token } };
     default:
       return state;
   }

@@ -14,7 +14,7 @@ class ProductList extends Component {
     this.state = {
       products: [],
       currentPage: 1,
-      perPage: 9
+      perPage: 8
     };
     // TODO: set instance level vars -> this.props.products.length, lastPage = Math.ceil(this.props.products.length / this.state.perPage)
   }

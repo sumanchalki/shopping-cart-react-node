@@ -83,25 +83,25 @@ export const signIn = formProps => async dispatch => {
   }
 };
 
-export const signOut = () => dispatch => {
-  dispatch({ type: types.LOGOUT_USER });
-};
-
-export const loadUser = (userDetails) => async dispatch => {
+export const editProfile = formProps => async dispatch => {
   try {
-    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/load-user', {
+    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/update-profile', {
       method: 'POST',
-      body: JSON.stringify(userDetails)
+      body: JSON.stringify(formProps)
     });
     let data = await response.json();
     if (data.success) {
-      dispatch({ type: types.LOAD_USER, payload: data });
+      dispatch({ type: types.RELOAD_USER, payload: data.userData });
     }
     return data;
   }
   catch (e) {
     console.log(e);
   }
+};
+
+export const signOut = () => dispatch => {
+  dispatch({ type: types.LOGOUT_USER });
 };
 
 // Handle HTTP errors since fetch won't.

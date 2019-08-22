@@ -24,4 +24,5 @@ module.exports = function(app) {
     })(req, res, next);
   });
   app.post('/api/load-user', userController.getUserDetails);
+  app.post('/api/update-profile', userController.updateProfile);
 }

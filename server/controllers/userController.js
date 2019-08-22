@@ -101,6 +101,49 @@ exports.signInValidation = async function(req, res, next) {
   next();
 }
 
+exports.updateProfile = async function(req, res, next) {
+  const userId = req.body._id;
+  const firstName = req.body.firstname;
+  const lastName = req.body.lastname;
+  const gender = req.body.gender;
+
+  const errors = {};
+
+  if (typeof(firstName) === 'undefined' || firstName === '') {
+    errors.firstname = 'First name cannot be blank';
+  }
+  if (typeof(lastName) === 'undefined' || lastName === '') {
+    errors.lastname = 'Last name cannot be blank';
+  }
+  if (typeof(gender) === 'undefined' || gender === '') {
+    errors.gender = 'Gender cannot be blank';
+  }
+
+  // Find the user with the given id.
+  const existingUser = await User.findById(userId);
+
+  if (existingUser) {
+    existingUser.firstName = firstName;
+    existingUser.lastName = lastName;
+    existingUser.gender = gender;
+
+    const user = await existingUser.save();
+    if (user === existingUser) {
+      return res.json({ 'success': true, userData: { ..._.omit(existingUser.toObject(), ['password', 'date', '__v']) } });
+    }
+    else {
+      errors.form = "Can't update the database!";
+    }
+  }
+  else {
+    errors.form = 'Invalid user!';
+  }
+
+  if (Object.keys(errors).length) {
+    return res.status(422).send({ 'success': false, errors });
+  }
+}
+
 // TODO: To use express validator instead.
 function validateEmail(email) {
   var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

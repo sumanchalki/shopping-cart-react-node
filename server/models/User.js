@@ -31,6 +31,7 @@ userSchema
 // Before save, encrypt the password.
 userSchema.pre('save', function(next) {
   const user = this;
+  if (!user.isModified('password')) return next();
 
   // Generate a salt and then run callback.
   bcrypt.genSalt(10, function(err, salt) {

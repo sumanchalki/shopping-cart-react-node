@@ -6,7 +6,7 @@ import ReadMore from '../helpers/ReadMore';
 
 export default (props) => {
   return(
-    <div className="col-6 col-sm-4">
+    <div className="col-6 col-sm-4 col-md-4 col-lg-3">
 
       <div className="product-box card bg-light mb-3">
         <div className="card-header">
@@ -24,7 +24,7 @@ export default (props) => {
             <ReadMore text={props.product.Description} length="100" />
           </p>
           <p className="card-text"><b>Category:</b> {props.product.Category}</p>
-          <p className="card-text"><b>Made by:</b> {props.product.Manufacturer}</p>
+          <p className="card-text"><b>Made by:</b> <ReadMore text={props.product.Manufacturer} length="15" /></p>
           <p className="card-text"><b>Organic:</b> {props.product.Organic ? 'Yes' : 'No' }</p>
           <p className="card-text"><b>Price:</b> ${props.product.Price}</p>
           <AddToCart product={props.product} />

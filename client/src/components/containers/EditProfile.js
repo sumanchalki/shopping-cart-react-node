@@ -128,5 +128,5 @@ const mapStateToProps = state => {
 
 export default compose(
   connect(mapStateToProps, actions),
-  reduxForm({ form: 'editprofile', validate: validateEditProfileForm })
+  reduxForm({ form: 'editprofile', validate: validateEditProfileForm, enableReinitialize: true })
 )(EditProfile);
