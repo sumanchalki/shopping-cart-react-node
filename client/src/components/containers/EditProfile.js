@@ -13,7 +13,18 @@ const renderInputField = ({ input, label, className, type, meta: { touched, erro
     <input {...input} className={className} type={type} />
       {touched && error && <span className="text-danger">{error}</span>}
   </React.Fragment>
-)
+);
+
+const renderFileInputField = ({ input, label, className, type, meta: { touched, error } }) => (
+  <React.Fragment>
+    <label htmlFor={input.name}>{label}</label>
+    {/* input type="file" doesn’t support setting the value property from JS
+        for security reason. To avoid this error value to be set as null.
+    */}
+    <input {...input} className={className} type={type} accept='.jpg, .png, .jpeg' value={null} />
+      {touched && error && <span className="text-danger">{error}</span>}
+  </React.Fragment>
+);
 
 // TODO: to move form fields inside directory InputFields.
 const renderRadioGroup = ({ input, label, options, className, meta: { touched, pristine, error } }) => (
@@ -35,11 +46,12 @@ const renderRadioGroup = ({ input, label, options, className, meta: { touched, p
     </div>
     {touched && !pristine && error && <span className="text-danger">{error}</span>}
   </React.Fragment>
-)
+);
 
 class EditProfile extends Component {
   onSubmitHandler = formProps => {
-    return this.props.editProfile(formProps).then(response => {
+    // Along with formProps pass the current userid to thunk middleware
+    return this.props.editProfile(formProps, this.props.initialValues).then(response => {
       if (response.success) {
         displayMessage('You have updated your profile successfully.', 'success');
         this.props.reset();
@@ -64,7 +76,7 @@ class EditProfile extends Component {
   render() {
     const { handleSubmit, pristine, reset, submitting, error } = this.props;
     return(
-      <form onSubmit={handleSubmit(this.onSubmitHandler)} className="needs-validation">
+      <form id="edit-profile-form" onSubmit={handleSubmit(this.onSubmitHandler)} className="needs-validation" encType="multipart/form-data">
         {error &&
           <div className="alert alert-danger">
             <strong>Error!</strong> {error}
@@ -74,6 +86,9 @@ class EditProfile extends Component {
         </div>
         <div className="form-group">
           <Field name="lastname" label="Last Name" type="text" className="form-control" component={renderInputField} />
+        </div>
+        <div className="form-group">
+          <Field name="picture" label="Photo" type="file" className="form-control" component={renderFileInputField} />
         </div>
         <div className="form-group">
           <Field name="gender" label="Gender" className="form-check-input"
@@ -110,10 +125,11 @@ const validateEditProfileForm = values => {
     errors.password = 'Password is required.'
   }
   return errors;
-}
+};
 
 const mapStateToProps = state => {
   if (!_.isEmpty(state.user.userData)) {
+    // Need to change to key from firstName to firstname etc.
     const userData = _.omit(state.user.userData, ['firstName', 'lastName']);
     return {
       initialValues:
@@ -124,7 +140,7 @@ const mapStateToProps = state => {
         }
     };
   }
-}
+};
 
 export default compose(
   connect(mapStateToProps, actions),

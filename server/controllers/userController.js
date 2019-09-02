@@ -1,3 +1,4 @@
+const fs = require('fs');
 const _ = require('lodash');
 const User = require('../models/User');
 
@@ -126,6 +127,19 @@ exports.updateProfile = async function(req, res, next) {
     existingUser.firstName = firstName;
     existingUser.lastName = lastName;
     existingUser.gender = gender;
+
+    if (req.files.length) {
+      if (existingUser.picture !== '') {
+        fs.unlink(`./${existingUser.picture}`, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        });
+      }
+      const fileObj = req.files[0];
+      existingUser.picture = fileObj.destination + fileObj.filename;
+    }
 
     const user = await existingUser.save();
     if (user === existingUser) {

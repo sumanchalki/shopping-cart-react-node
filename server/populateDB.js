@@ -7,7 +7,8 @@ const User = require('./models/User');
 // Get arguments passed on command line
 const userArgs = process.argv.slice(2);
 // TODO to use this userArgs to take user params
-// to optionally empty collection before enter data.
+// to optionally empty collection before enter data
+// add create and store random images.
 
 const mongoose = require('mongoose');
 const connectDb = require('./connectDB');

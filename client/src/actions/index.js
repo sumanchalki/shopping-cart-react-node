@@ -83,11 +83,13 @@ export const signIn = formProps => async dispatch => {
   }
 };
 
-export const editProfile = formProps => async dispatch => {
+export const editProfile = (formProps, userData, successCallBack) => async dispatch => {
+  const formData = new FormData(document.getElementById('edit-profile-form'));
+  formData.append('_id', userData._id);
   try {
     let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/update-profile', {
       method: 'POST',
-      body: JSON.stringify(formProps)
+      body: formData
     });
     let data = await response.json();
     if (data.success) {

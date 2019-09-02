@@ -1,18 +1,21 @@
 const path = require('path');
 const express = require('express');
 const morgan = require('morgan');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const connectDb = require('./connectDB');
 const router = require('./routes');
 const start = () => {
   const app = express();
+
   // Connect to MongoDB.
   connectDb();
   app.use(morgan('combined'));
   app.use(cors());
-  app.use(bodyParser.json({ type: '*/*' }));
+
+  // Use a body parser custom logic defined in addBodyParser().
+  app.all('*', addBodyParser);
+
   // Handle error of bodyParser if request data is improper.
   app.use(function(err, req, res, next) {
     console.error(err.stack);
@@ -42,6 +45,28 @@ const start = () => {
   app.listen(PORT, () => {
     console.log(`Express app listening on port ${PORT}!`);
   });
+}
+
+function addBodyParser(req, res, next) {
+  if ( req.path == '/api/update-profile') {
+    // Use 'multer' middleware for file-uploading.
+    const multer  = require('multer');
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, 'uploads/profile-images/');
+      },
+      filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+      }
+    });
+    // const upload = multer({ dest: 'uploads/profile-images/' });
+    const upload = multer({ storage: storage });
+    return upload.any()(req, res, next);
+  }
+
+  // Use 'body-parser' middleware for all other cases.
+  const bodyParser = require('body-parser');
+  return bodyParser.json({ type: '*/*' })(req, res, next);
 }
 
 exports.start = start;

@@ -5,6 +5,7 @@ const _ = require('lodash');
 const passportService = require('../services/passport');
 const passport = require('passport');
 const userController = require('../controllers/userController');
+const bodyParser = require('body-parser');
 
 const requireAuth = passport.authenticate('jwt', { session: false });
 
@@ -24,5 +25,6 @@ module.exports = function(app) {
     })(req, res, next);
   });
   app.post('/api/load-user', userController.getUserDetails);
+
   app.post('/api/update-profile', userController.updateProfile);
 }
