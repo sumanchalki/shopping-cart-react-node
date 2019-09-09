@@ -5,48 +5,9 @@ import { compose } from 'redux';
 import _ from 'lodash';
 import * as actions from '../../actions';
 import { displayMessage } from '../../lib/cartLib';
-
-// TODO: to move form fields inside directory InputFields.
-const renderInputField = ({ input, label, className, type, meta: { touched, error } }) => (
-  <React.Fragment>
-    <label htmlFor={input.name}>{label}</label>
-    <input {...input} className={className} type={type} />
-      {touched && error && <span className="text-danger">{error}</span>}
-  </React.Fragment>
-);
-
-const renderFileInputField = ({ input, label, className, type, meta: { touched, error } }) => (
-  <React.Fragment>
-    <label htmlFor={input.name}>{label}</label>
-    {/* input type="file" doesn’t support setting the value property from JS
-        for security reason. To avoid this error value to be set as null.
-    */}
-    <input {...input} className={className} type={type} accept='.jpg, .png, .jpeg' value={null} />
-      {touched && error && <span className="text-danger">{error}</span>}
-  </React.Fragment>
-);
-
-// TODO: to move form fields inside directory InputFields.
-const renderRadioGroup = ({ input, label, options, className, meta: { touched, pristine, error } }) => (
-  <React.Fragment>
-    <label htmlFor={input.name}>{label}</label>
-    <div className="form-control">
-      <Field
-        component={({ input, options }) => (
-          options.map(o =>
-          <div key={o.value} className="form-check-inline">
-            <label>
-              <input className={className} type="radio" name={input.name} onChange={input.onChange} value={o.value} checked={o.value === input.value} /> {o.title}
-            </label>
-          </div>)
-          )}
-        name={input.name}
-        options={options}
-      />
-    </div>
-    {touched && !pristine && error && <span className="text-danger">{error}</span>}
-  </React.Fragment>
-);
+import renderInputField from '../InputFields/FieldInput';
+import renderRadioGroup from '../InputFields/FieldRadioGroup';
+import renderFileInputField from '../InputFields/FieldFileInput';
 
 class EditProfile extends Component {
   onSubmitHandler = formProps => {
