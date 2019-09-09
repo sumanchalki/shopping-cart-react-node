@@ -36,7 +36,7 @@ const renderRadioGroup = ({ input, label, options, className, meta: { touched, p
           options.map(o =>
           <div key={o.value} className="form-check-inline">
             <label>
-              <input className={className} type="radio" onChange={input.onChange} value={o.value} checked={o.value === input.value} /> {o.title}
+              <input className={className} type="radio" name={input.name} onChange={input.onChange} value={o.value} checked={o.value === input.value} /> {o.title}
             </label>
           </div>)
           )}

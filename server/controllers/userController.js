@@ -129,7 +129,7 @@ exports.updateProfile = async function(req, res, next) {
     existingUser.gender = gender;
 
     if (req.files.length) {
-      if (existingUser.picture !== '') {
+      if (existingUser.picture) {
         fs.unlink(`./${existingUser.picture}`, (err) => {
           if (err) {
             console.error(err);
