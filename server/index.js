@@ -53,7 +53,7 @@ function addBodyParser(req, res, next) {
     const multer  = require('multer');
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        cb(null, 'uploads/profile-images/');
+        cb(null, 'client/public/uploads/profile-images/');
       },
       filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);

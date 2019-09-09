@@ -48,9 +48,7 @@ class EditProfile extends Component {
         <div className="form-group">
           <Field name="lastname" label="Last Name" type="text" className="form-control" component={renderInputField} />
         </div>
-        <div className="form-group">
-          <Field name="picture" label="Photo" type="file" className="form-control" component={renderFileInputField} />
-        </div>
+        <Field name="picture" label="Photo" type="file" className="form-control" component={renderFileInputField} />
         <div className="form-group">
           <Field name="gender" label="Gender" className="form-check-input"
             component={renderRadioGroup} options={ [

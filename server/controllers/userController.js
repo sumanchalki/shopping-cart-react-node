@@ -130,7 +130,7 @@ exports.updateProfile = async function(req, res, next) {
 
     if (req.files.length) {
       if (existingUser.picture) {
-        fs.unlink(`./${existingUser.picture}`, (err) => {
+        fs.unlink(`./client/public/${existingUser.picture}`, (err) => {
           if (err) {
             console.error(err);
             return;
@@ -138,7 +138,7 @@ exports.updateProfile = async function(req, res, next) {
         });
       }
       const fileObj = req.files[0];
-      existingUser.picture = fileObj.destination + fileObj.filename;
+      existingUser.picture = 'uploads/profile-images/' + fileObj.filename;
     }
 
     const user = await existingUser.save();

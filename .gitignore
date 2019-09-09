@@ -1,4 +1,4 @@
 /node_modules
 .env
-/uploads
+/client/public/uploads
 /.vscode
