@@ -12,7 +12,13 @@ export default WrappedComponent => {
     }
 
     navigateToLogin() {
-      // TODO: to check authentication from redux store and then redirect if not authenticated.
+      const { userData } = this.props.user;
+      if (!userData || !Object.keys(userData).length) {
+        // Redirect to sign-in page.
+        // Hitting back button should go back to the
+        // earlier page in history instead of the protected page.
+        this.props.history.replace('/sign-in');
+      }
     }
 
     render() {

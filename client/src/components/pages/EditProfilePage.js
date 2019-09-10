@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import EditProfile from '../containers/EditProfile';
+import requireAuth from '../../hoc/requireAuth';
 
-export default class EditProfilePage extends Component {
+class EditProfilePage extends Component {
   render() {
     return(
       <div className="container main-container">
@@ -10,3 +11,5 @@ export default class EditProfilePage extends Component {
     )
   }
 }
+
+export default requireAuth(EditProfilePage);
