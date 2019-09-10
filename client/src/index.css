@@ -61,6 +61,19 @@ color: #7400a6;
   margin: 20px 0;
 }
 
+.form-group > img {
+  max-width: 15em;
+  max-height: 15em;
+}
+
+.form-group > img.temporary {
+  border: 1px solid #f2ca3c;
+}
+
+.form-group > img.permanent {
+  border: 1px solid green;
+}
+
 /* Footer Part */
 .footer-classic {
   background: #2d3246;

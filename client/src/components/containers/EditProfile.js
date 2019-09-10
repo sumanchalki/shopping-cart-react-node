@@ -7,7 +7,7 @@ import * as actions from '../../actions';
 import { displayMessage } from '../../lib/cartLib';
 import renderInputField from '../InputFields/FieldInput';
 import renderRadioGroup from '../InputFields/FieldRadioGroup';
-import renderFileInputField from '../InputFields/FieldFileInput';
+import FileInputField from '../InputFields/FieldFileInput';
 
 class EditProfile extends Component {
   onSubmitHandler = formProps => {
@@ -48,7 +48,7 @@ class EditProfile extends Component {
         <div className="form-group">
           <Field name="lastname" label="Last Name" type="text" className="form-control" component={renderInputField} />
         </div>
-        <Field name="picture" label="Photo" type="file" className="form-control" component={renderFileInputField} />
+        <Field name="picture" label="Photo" type="file" className="form-control" component={FileInputField} />
         <div className="form-group">
           <Field name="gender" label="Gender" className="form-check-input"
             component={renderRadioGroup} options={ [
