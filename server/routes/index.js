@@ -27,4 +27,10 @@ module.exports = function(app) {
   app.post('/api/load-user', userController.getUserDetails);
 
   app.post('/api/update-profile', userController.updateProfile);
+
+  // Global error handler to send output.
+  app.use(function (err, req, res, next) {
+    console.log(err);
+    res.status(500).send('Server error!');
+  })
 }
