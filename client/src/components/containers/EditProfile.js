@@ -13,11 +13,11 @@ class EditProfile extends Component {
   onSubmitHandler = formProps => {
     // Along with formProps pass the current userid to thunk middleware
     return this.props.editProfile(formProps, this.props.initialValues).then(response => {
-      if (response.success) {
+      if (response && response.success) {
         displayMessage('You have updated your profile successfully.', 'success');
         this.props.reset();
       }
-      else if (!response.success && Object.keys(response.errors).length) {
+      else if (response && !response.success && Object.keys(response.errors).length) {
         const errorsList = {...response.errors};
         if (typeof(errorsList.form) === 'undefined') {
           throw new SubmissionError(errorsList);
@@ -86,6 +86,9 @@ const validateEditProfileForm = values => {
   return errors;
 };
 
+// TODO: For certain cases, e.g. refreshing the page
+// (Or hitting refresh icon at page) the user profile state
+// needs to be updated from backend.
 const mapStateToProps = state => {
   if (!_.isEmpty(state.user.userData)) {
     // Need to change to key from firstName to firstname etc.

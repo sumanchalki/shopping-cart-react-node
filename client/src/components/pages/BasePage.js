@@ -8,6 +8,7 @@ import EditProfilePage from './EditProfilePage';
 import PageNotFound from '../views/PageNotFound';
 import Header from '../views/Header';
 import NavContainer from '../containers/NavContainer';
+import ErrorBoundary from '../errorHandlers/ErrorBoundary';
 import Footer from '../views/Footer';
 import withAuth from '../../hoc/withAuth';
 
@@ -40,7 +41,9 @@ class BasePage extends Component {
       <div className="App">
         <Header />
         <NavContainer />
-        {componentRendered}
+        <ErrorBoundary>
+          {componentRendered}
+        </ErrorBoundary>
         <Footer />
       </div>
     );
