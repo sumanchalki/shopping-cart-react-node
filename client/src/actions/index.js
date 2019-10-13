@@ -89,7 +89,10 @@ export const editProfile = (formProps, userData, successCallBack) => async dispa
   try {
     let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/update-profile', {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: {
+        'Authorization': `Bearer ${userData.token}`
+      }
     });
     let data = await response.json();
     if (data.success) {

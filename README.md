@@ -1,5 +1,5 @@
 # Shopping cart using React & Node.js
-Shopping cart using Node.js, React, Redux and Bootstrap 4
+Shopping cart using Node.js (Express), React, Redux and Bootstrap 4
 
 This is a fullstack shopping cart application.
 

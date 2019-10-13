@@ -57,7 +57,7 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
   });
 }
 
-userSchema.methods.getUserToken = () => {
+userSchema.methods.getUserToken = function() {
   const timestamp = new Date().getTime();
   return jwt.encode({ sub: this._id, iat: timestamp }, config.secret);
 }

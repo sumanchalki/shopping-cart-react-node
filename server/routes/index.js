@@ -12,7 +12,7 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 module.exports = function(app) {
   app.post('/api/signup', userController.signUp);
   app.post('/api/signin', userController.signInValidation, function(req, res, next) {
-    passport.authenticate('local', { session : false }, function(err, user, info) {
+    passport.authenticate('local', { session: false }, function(err, user, info) {
       if (err) return next(err);
 
       if (!user) {
@@ -26,7 +26,7 @@ module.exports = function(app) {
   });
   app.post('/api/load-user', userController.getUserDetails);
 
-  app.post('/api/update-profile', userController.updateProfile);
+  app.post('/api/update-profile', requireAuth, userController.updateProfile);
 
   // Global error handler to send output.
   app.use(function (err, req, res, next) {
