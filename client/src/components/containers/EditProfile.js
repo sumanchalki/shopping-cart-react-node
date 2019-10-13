@@ -12,7 +12,7 @@ import FileInputField from '../InputFields/FieldFileInput';
 class EditProfile extends Component {
   onSubmitHandler = formProps => {
     // Along with formProps pass the current userid to thunk middleware
-    return this.props.editProfile(formProps, this.props.initialValues).then(response => {
+    return this.props.editProfile('edit-profile-form', this.props.initialValues, this.props.history).then(response => {
       if (response && response.success) {
         displayMessage('You have updated your profile successfully.', 'success');
         this.props.reset();

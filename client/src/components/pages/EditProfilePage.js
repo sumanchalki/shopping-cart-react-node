@@ -6,7 +6,7 @@ class EditProfilePage extends Component {
   render() {
     return(
       <div className="container main-container">
-        <EditProfile />
+        <EditProfile {...this.props} />
       </div>
     )
   }

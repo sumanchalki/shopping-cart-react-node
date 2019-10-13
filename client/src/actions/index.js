@@ -83,8 +83,8 @@ export const signIn = formProps => async dispatch => {
   }
 };
 
-export const editProfile = (formProps, userData, successCallBack) => async dispatch => {
-  const formData = new FormData(document.getElementById('edit-profile-form'));
+export const editProfile = (formId, userData, history) => async dispatch => {
+  const formData = new FormData(document.getElementById(formId));
   formData.append('_id', userData._id);
   try {
     let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/update-profile', {
@@ -98,10 +98,17 @@ export const editProfile = (formProps, userData, successCallBack) => async dispa
     if (data.success) {
       dispatch({ type: types.RELOAD_USER, payload: data.userData });
     }
+    else {
+      // Server invalidated the token so signing out the user.
+      dispatch({ type: types.LOGOUT_USER });
+      history.push('/sign-in');
+    }
     return data;
   }
   catch (e) {
-    console.log(e);
+    // Server rejected the request meaning the token is invalid.
+    dispatch({ type: types.LOGOUT_USER });
+    history.push('/sign-in');
   }
 };
 
