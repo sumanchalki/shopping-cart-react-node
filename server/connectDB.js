@@ -8,7 +8,7 @@ else if (process.env.NODE_ENV === 'dev') {
   config = require('./config/config.dev.js');
   console.log('dev config');
 }
-
+console.log('after config...');
 module.exports = () => {
   // Mongoose calls ensureIndex() internally.
   // collection.ensureIndex is deprecated. Use createIndexes instead.
