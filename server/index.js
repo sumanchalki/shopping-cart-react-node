@@ -10,7 +10,7 @@ const start = () => {
 
   // Connect to MongoDB.
   connectDb();
-  app.use(morgan('combined'));
+  //app.use(morgan('combined'));
   app.use(cors());
 
   // Use a body parser custom logic defined in addBodyParser().
