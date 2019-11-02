@@ -57,3 +57,39 @@ export function* signInSaga(action) {
     yield call(action.reject);
   }
 }
+
+export function* watchEditProfile() {
+  yield takeLatest(types.EDIT_PROFILE_REQUEST, editProfileSaga);
+}
+
+export function* editProfileSaga(action) {
+  const formData = new FormData(document.getElementById(action.formId));
+  formData.append('_id', action.userData._id);
+  try {
+    let response = yield fetch(
+      process.env.REACT_APP_REMOTE_HOST + '/api/update-profile',
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${action.userData.token}`
+        }
+      }
+    );
+    let data = yield response.json();
+    if (data.success) {
+      yield put({ type: types.RELOAD_USER, payload: data.userData });
+      yield call(action.resolve, data);
+    } else {
+      // Server invalidated the token so signing out the user.
+      yield put({ type: types.LOGOUT_USER });
+      action.history.push('/sign-in');
+      yield call(action.reject);
+    }
+  } catch (e) {
+    // Server rejected the request meaning the token is invalid.
+    yield put({ type: types.LOGOUT_USER });
+    action.history.push('/sign-in');
+    yield call(action.reject);
+  }
+}

@@ -20,3 +20,4 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 export const RELOAD_USER = 'RELOAD_USER';
 
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
+export const EDIT_PROFILE_REQUEST = 'EDIT_PROFILE_REQUEST';
