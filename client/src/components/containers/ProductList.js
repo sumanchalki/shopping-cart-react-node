@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import $ from "jquery";
+import $ from 'jquery';
 import { connect } from 'react-redux';
 
 import { AddToCartContext } from '../../contexts/AddToCartContext';
@@ -19,55 +19,68 @@ class ProductList extends Component {
     // TODO: set instance level vars -> this.props.products.length, lastPage = Math.ceil(this.props.products.length / this.state.perPage)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.getProducts();
   }
 
   getPagedData = () => {
-    const currentPageItemStart = (this.state.currentPage - 1) * this.state.perPage;
+    const currentPageItemStart =
+      (this.state.currentPage - 1) * this.state.perPage;
     const currentPageItemEnd = currentPageItemStart + this.state.perPage;
     return [currentPageItemStart, currentPageItemEnd];
-  }
+  };
 
-  handleThisPage = (number) => {
-    this.setState({currentPage: number});
-    $("html, body").animate({ scrollTop: 0 }, 500);
-  }
+  handleThisPage = number => {
+    this.setState({ currentPage: number });
+    $('html, body').animate({ scrollTop: 0 }, 500);
+  };
 
   handlePreviousPage = () => {
     if (this.state.currentPage > 0) {
-      this.setState({currentPage: (this.state.currentPage - 1)});
-      $("html, body").animate({ scrollTop: 0 }, 500);
+      this.setState({ currentPage: this.state.currentPage - 1 });
+      $('html, body').animate({ scrollTop: 0 }, 500);
     }
-  }
+  };
 
   handleNextPage = () => {
     const lastPage = Math.ceil(this.props.products.length / this.state.perPage);
     if (this.state.currentPage < lastPage) {
-      this.setState({currentPage: (this.state.currentPage + 1)});
-      $("html, body").animate({ scrollTop: 0 }, 500);
+      this.setState({ currentPage: this.state.currentPage + 1 });
+      $('html, body').animate({ scrollTop: 0 }, 500);
     }
-  }
+  };
 
   render() {
     const totalProductCount = this.props.products.length;
     const [currentPageItemStart, currentPageItemEnd] = this.getPagedData();
-    const currentPageProducts = this.props.products.slice(currentPageItemStart, currentPageItemEnd);
-    const productListMarkup = currentPageProducts.map(product =>
-      <ProductDetailSummary product={product} key={product.Id} />
+    const currentPageProducts = this.props.products.slice(
+      currentPageItemStart,
+      currentPageItemEnd
     );
+    const productListMarkup = currentPageProducts.map(product => (
+      <ProductDetailSummary product={product} key={product.Id} />
+    ));
 
     // Passing AddToCartContext as it might be used at any deep level child.
-    return(
-      <AddToCartContext.Provider value={{action: this.props.addToCartAction}}>
+    return (
+      <AddToCartContext.Provider value={{ action: this.props.addToCartAction }}>
         <div className="container">
           <h3 className="center">Product List</h3>
 
-          <ProductListSummary currentPageItemStart={currentPageItemStart} currentPageItemEnd={currentPageItemEnd} totalProductCount={totalProductCount} />
-          <div className="row">
-            {productListMarkup}
-          </div>
-          <Pagination currentPage={this.state.currentPage} perPage={this.state.perPage} totalProductCount={totalProductCount} handlePreviousPage={this.handlePreviousPage} handleThisPage={this.handleThisPage} handleNextPage={this.handleNextPage} />
+          <ProductListSummary
+            currentPageItemStart={currentPageItemStart}
+            currentPageItemEnd={currentPageItemEnd}
+            totalProductCount={totalProductCount}
+          />
+          <div className="row">{productListMarkup}</div>
+          <Pagination
+            currentPage={this.state.currentPage}
+            perPage={this.state.perPage}
+            totalProductCount={totalProductCount}
+            handlePreviousPage={this.handlePreviousPage}
+            handleThisPage={this.handleThisPage}
+            handleNextPage={this.handleNextPage}
+          />
         </div>
       </AddToCartContext.Provider>
     );
@@ -75,12 +88,14 @@ class ProductList extends Component {
 }
 
 const mapStateToProps = state => {
-  if(typeof state.products.allProducts === 'undefined') {
-    return {products: []};
+  if (typeof state.products.allProducts === 'undefined') {
+    return { products: [] };
+  } else {
+    return { products: state.products.allProducts };
   }
-  else {
-    return {products: state.products.allProducts};
-  }
-}
+};
 
-export default connect(mapStateToProps, actions)(ProductList);
+export default connect(
+  mapStateToProps,
+  actions
+)(ProductList);

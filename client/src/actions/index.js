@@ -22,31 +22,16 @@ export function updateCartAction(payload) {
 }
 
 export function getProducts(payload) {
-  return function action(dispatch) {
-    return fetch('/data/ProductData.json')
-      .then(handleErrors)
-      .then(res => res.json())
-      .then(json => {
-        dispatch({ type: types.FETCH_PRODUCTS, payload: json.Products });
-      });
+  return {
+    type: types.FETCH_PRODUCTS_REQUEST,
+    payload
   };
 }
 
 export function getProductDetails(productId) {
-  return function action(dispatch) {
-    return fetch('/data/ProductData.json')
-      .then(handleErrors)
-      .then(res => res.json())
-      .then(json => {
-        const product = json.Products.filter(product => {
-          if (product.Id === productId) {
-            return true;
-          } else {
-            return false;
-          }
-        });
-        dispatch({ type: types.FETCH_PRODUCT_DETAILS, payload: product });
-      });
+  return {
+    type: types.FETCH_PRODUCT_DETAILS_REQUEST,
+    productId
   };
 }
 
@@ -101,11 +86,3 @@ export const editProfile = (formId, userData, history) => async dispatch => {
 export const signOut = () => dispatch => {
   dispatch({ type: types.LOGOUT_USER });
 };
-
-// Handle HTTP errors since fetch won't.
-function handleErrors(response) {
-  if (!response.ok) {
-    throw Error(response.statusText);
-  }
-  return response;
-}
