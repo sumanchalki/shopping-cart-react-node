@@ -23,84 +23,75 @@ export function updateCartAction(payload) {
 
 export function getProducts(payload) {
   return function action(dispatch) {
-    return fetch("/data/ProductData.json")
+    return fetch('/data/ProductData.json')
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
         dispatch({ type: types.FETCH_PRODUCTS, payload: json.Products });
       });
-  }
+  };
 }
 
 export function getProductDetails(productId) {
   return function action(dispatch) {
-    return fetch("/data/ProductData.json")
+    return fetch('/data/ProductData.json')
       .then(handleErrors)
       .then(res => res.json())
       .then(json => {
         const product = json.Products.filter(product => {
           if (product.Id === productId) {
             return true;
-          }
-          else {
+          } else {
             return false;
           }
         });
         dispatch({ type: types.FETCH_PRODUCT_DETAILS, payload: product });
       });
-  }
+  };
 }
 
-export function signUp (formProps, resolve, reject) {
+export function signUp(formProps, resolve, reject) {
   return {
     type: types.SIGN_UP_REQUEST,
     formProps,
     resolve,
     reject
   };
-};
+}
 
-export const signIn = formProps => async dispatch => {
-  try {
-    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/signin', {
-      method: 'POST',
-      body: JSON.stringify(formProps)
-    });
-
-    let data = await response.json();
-    if (typeof(data.userData) !== 'undefined') {
-      dispatch({ type: types.LOGIN_USER, payload: data.userData });
-    }
-    return data;
-  }
-  catch (e) {
-    console.log(e);
-  }
-};
+export function signIn(formProps, resolve, reject) {
+  return {
+    type: types.SIGN_IN_REQUEST,
+    formProps,
+    resolve,
+    reject
+  };
+}
 
 export const editProfile = (formId, userData, history) => async dispatch => {
   const formData = new FormData(document.getElementById(formId));
   formData.append('_id', userData._id);
   try {
-    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/update-profile', {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Authorization': `Bearer ${userData.token}`
+    let response = await fetch(
+      process.env.REACT_APP_REMOTE_HOST + '/api/update-profile',
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${userData.token}`
+        }
       }
-    });
+    );
     let data = await response.json();
     if (data.success) {
       dispatch({ type: types.RELOAD_USER, payload: data.userData });
-    }
-    else {
+    } else {
       // Server invalidated the token so signing out the user.
       dispatch({ type: types.LOGOUT_USER });
       history.push('/sign-in');
     }
     return data;
-  }
-  catch (e) {
+  } catch (e) {
     // Server rejected the request meaning the token is invalid.
     dispatch({ type: types.LOGOUT_USER });
     history.push('/sign-in');

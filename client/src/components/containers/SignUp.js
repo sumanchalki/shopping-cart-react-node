@@ -37,7 +37,7 @@ class SignUp extends Component {
           }
         } else {
           throw new SubmissionError({
-            _error: 'Signup failed due to some server error!'
+            _error: 'Signup failed due to server error!'
           });
         }
       });

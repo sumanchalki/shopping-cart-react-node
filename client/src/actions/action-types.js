@@ -8,7 +8,8 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const FETCH_PRODUCT_DETAILS = 'FETCH_PRODUCT_DETAILS';
 
 // User
-export const LOGIN_USER = 'LOGIN_USER';
+export const SIGN_IN_REQUEST = 'SIGN_IN_REQUEST';
+export const SIGN_IN_SUCCESS = 'SIGN_IN_SUCCESS';
 // User details and cart details will be empty
 // from state store on LOGOUT.
 export const LOGOUT_USER = 'LOGOUT_USER';
