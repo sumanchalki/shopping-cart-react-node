@@ -37,13 +37,22 @@ const renderRadioGroup = ({ input, label, options, className, meta: { touched, p
 )
 
 class SignUp extends Component {
+
   onSubmitHandler = formProps => {
-    return this.props.signUp(formProps).then(response => {
-      if (response.success) {
-        displayMessage('You have been signed up successfully.', 'success');
-        this.props.reset();
-      }
-      else if (!response.success && Object.keys(response.errors).length) {
+    // Promisify the form submit action dispatch, so that
+    // it will be returned with response from saga and
+    // it can be handled here with finer control.
+    return new Promise((resolve, reject) => {
+      // As mapDispatchToProps is not a function, return the object.
+      // Redux will do the dispatching automatically.
+      return this.props.signUp(formProps, resolve, reject);
+    })
+    .then(response => {
+      displayMessage('You have been signed up successfully.', 'success');
+      this.props.reset();
+    })
+    .catch(response => {
+      if (response && !response.success && Object.keys(response.errors).length) {
         const errorsList = {...response.errors};
         if (typeof(errorsList.form) === 'undefined') {
           throw new SubmissionError(errorsList);
@@ -59,6 +68,7 @@ class SignUp extends Component {
       }
     });
   }
+
   render() {
     const { handleSubmit, submitting, error } = this.props;
     return(
@@ -79,19 +89,6 @@ class SignUp extends Component {
               { title: 'Male', value: 'male' },
               { title: 'Female', value: 'female' }
           ] } />
-          {/* <label htmlFor="gender">Gender</label>
-          <div className="form-control">
-            <div className="form-check-inline">
-              <label className="form-check-label">
-                <Field name="gender" type="radio" className="form-check-input" component="input" value="male" /> Male
-              </label>
-            </div>
-            <div className="form-check-inline">
-              <label className="form-check-label">
-              <Field name="gender" type="radio" className="form-check-input" component="input" value="female" /> Female
-              </label>
-            </div>
-          </div> */}
         </div>
         <div className="form-group">
           <Field name="address" label="Address" type="textarea" className="form-control" component={renderInputField} />

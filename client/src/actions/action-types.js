@@ -15,3 +15,5 @@ export const LOGOUT_USER = 'LOGOUT_USER';
 // If user is updated at server end, reload it
 // at client end (e.g. in case of update user).
 export const RELOAD_USER = 'RELOAD_USER';
+
+export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';

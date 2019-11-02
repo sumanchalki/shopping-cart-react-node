@@ -51,18 +51,13 @@ export function getProductDetails(productId) {
   }
 }
 
-export const signUp = formProps => async dispatch => {
-  try {
-    let response = await fetch(process.env.REACT_APP_REMOTE_HOST + '/api/signup', {
-      method: 'POST',
-      body: JSON.stringify(formProps)
-    });
-    let data = await response.json();
-    return data;
-  }
-  catch (e) {
-    console.log(e);
-  }
+export function signUp (formProps, resolve, reject) {
+  return {
+    type: types.SIGN_UP_REQUEST,
+    formProps,
+    resolve,
+    reject
+  };
 };
 
 export const signIn = formProps => async dispatch => {
