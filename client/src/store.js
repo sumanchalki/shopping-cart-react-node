@@ -2,7 +2,6 @@ import { createStore, applyMiddleware } from 'redux';
 import throttle from 'lodash.throttle';
 import rootReducer from './reducers';
 import { loadState, saveState } from './localStorage';
-import thunk from "redux-thunk";
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas';
 //import stateValidator from './middlewares/stateValidator';
@@ -15,7 +14,11 @@ export default (initialState, env = 'real') => {
     case 'real':
     default:
       const persistedState = loadState();
-      store = createStore(rootReducer, persistedState, applyMiddleware(thunk, sagaMiddleware));
+      store = createStore(
+        rootReducer,
+        persistedState,
+        applyMiddleware(sagaMiddleware)
+      );
       sagaMiddleware.run(rootSaga);
 
       store.subscribe(
@@ -29,9 +32,13 @@ export default (initialState, env = 'real') => {
       );
       break;
     case 'test':
-      store = createStore(rootReducer, initialState, applyMiddleware(thunk, sagaMiddleware));
+      store = createStore(
+        rootReducer,
+        initialState,
+        applyMiddleware(sagaMiddleware)
+      );
       sagaMiddleware.run(rootSaga);
       break;
   }
   return store;
-}
+};
