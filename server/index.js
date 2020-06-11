@@ -17,7 +17,7 @@ const start = () => {
   app.all('*', addBodyParser);
 
   // Handle error of bodyParser if request data is improper.
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     console.error(err.stack);
     res.status(500).send('Invalid JSON input');
   });
@@ -26,38 +26,43 @@ const start = () => {
   router(app);
 
   // Serve the front-end as static files.
-  let publicDir;
+  let publicDir, indexFilePath;
   if (process.env.NODE_ENV === 'production') {
     publicDir = 'build';
-  }
-  else if (process.env.NODE_ENV === 'dev') {
+    indexFilePath = path.resolve(
+      __dirname,
+      '../client',
+      publicDir,
+      'index.html'
+    );
+  } else if (process.env.NODE_ENV === 'dev') {
     console.log('This is dev environment.');
     publicDir = 'public';
+    indexFilePath = path.resolve(__dirname, 'client', publicDir, 'index.html');
   }
 
   app.use(express.static(`client/${publicDir}`));
-
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', publicDir, 'index.html'));
+    res.sendFile(indexFilePath);
   });
 
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Express app listening on port ${PORT}!`);
   });
-}
+};
 
 function addBodyParser(req, res, next) {
-  if ( req.path == '/api/update-profile') {
+  if (req.path === '/api/update-profile') {
     // Use 'multer' middleware for file-uploading.
-    const multer  = require('multer');
+    const multer = require('multer');
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
         cb(null, 'client/public/uploads/profile-images/');
       },
       filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname);
-      }
+      },
     });
     // const upload = multer({ dest: 'uploads/profile-images/' });
     const upload = multer({ storage: storage });
